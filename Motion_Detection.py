@@ -19,3 +19,29 @@ bg_subtractor = cv2.createBackgroundSubtractorMOG2(
 
 # Optional: Kernel for noise removal
 kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
+
+# Motion detection loop
+while True:
+    ret, frame = cap.read()
+    if not ret:
+        break
+
+    # Apply background subtraction
+    fg_mask = bg_subtractor.apply(frame)
+
+    # Remove noise (morphological opening)
+    fg_mask = cv2.morphologyEx(fg_mask, cv2.MORPH_OPEN, kernel)
+
+    # Find contours of moving objects
+    contours, _ = cv2.findContours(
+        fg_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE
+    )
+
+    # Draw bounding boxes around significant motion
+    motion_detected = False
+    for contour in contours:
+        if cv2.contourArea(contour) > 500:  # Ignore small contours (noise)
+            x, y, w, h = cv2.boundingRect(contour)
+            cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+            motion_detected = True
+
