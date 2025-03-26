@@ -45,3 +45,23 @@ while True:
             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
             motion_detected = True
 
+    # Optional: Save frame if motion is detected
+    if motion_detected:
+        timestamp = time.strftime("%Y%m%d_%H%M%S")
+        cv2.imwrite(f"motion_{timestamp}.jpg", frame)
+
+    # Display results
+    cv2.imshow("Original Frame", frame)
+    cv2.imshow("Foreground Mask", fg_mask)
+
+    # Exit on 'q' key press
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+    # Optional: Reset background model on 'r' key press
+    if cv2.waitKey(1) & 0xFF == ord('r'):
+        bg_subtractor = cv2.createBackgroundSubtractorMOG2()
+
+# Release resources
+cap.release()
+cv2.destroyAllWindows()
