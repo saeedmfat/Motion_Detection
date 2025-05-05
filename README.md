@@ -21,6 +21,10 @@ A real-time motion detection application using OpenCV's background subtraction. 
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/Motion_Detection.git
+git clone https://github.com/saeedmfat/Motion_Detection.git
 cd Motion_Detection
-
+```
+2. Run the script
+```bash
+python3 Motion_Detection.py
+```
